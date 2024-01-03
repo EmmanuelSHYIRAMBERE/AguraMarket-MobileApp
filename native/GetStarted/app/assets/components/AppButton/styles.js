@@ -8,7 +8,7 @@ const buttonStyles = StyleSheet.create({
     alignItems: "center",
     alignSelf: "center",
     padding: 15,
-    width: "50%",
+    width: "95%",
     marginVertical: 10,
   },
   buttonText: {
