@@ -1,7 +1,7 @@
 import { create } from "apisauce";
 
 const apiClient = create({
-  baseUrl: "http://localhost:5000/api-docs",
+  baseUrl: "https://aguramarketapi.onrender.com/AguraMarket",
 });
 
 export default apiClient;

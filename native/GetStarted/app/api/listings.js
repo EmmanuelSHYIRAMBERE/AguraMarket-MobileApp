@@ -1,6 +1,6 @@
 const { default: apiClient } = require("./client");
 
-const endpoint = "/AguraMarket/products/getAllProducts";
+const endpoint = "/products/getAllProducts";
 
 const getListings = () => apiClient.get(endpoint);
 
