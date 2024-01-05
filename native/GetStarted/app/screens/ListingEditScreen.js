@@ -12,6 +12,7 @@ import FormPicker from "../assets/components/forms/FormPicker";
 import FormImagePicker from "../assets/components/forms/FormImagePicker";
 import Screen from "../assets/components/Screen";
 import useLocation from "../hooks/useLocation";
+import axios from "axios";
 
 const validationSchema = Yup.object().shape({
   title: Yup.string().required().min(1).label("Title"),
@@ -81,6 +82,20 @@ const categories = [
 function ListingEditScreen(props) {
   const location = useLocation();
 
+  const handleSubmit = async (product) => {
+    const result = await axios.post(
+      `https://aguramarketapi.onrender.com/AguraMarket/products/addNewProduct`,
+      {
+        ...product,
+        location,
+      }
+    );
+
+    if (!result.ok) return alert("Could not save the listing.");
+
+    alert("Success");
+  };
+
   return (
     <Screen style={styles.container}>
       <AppForm
@@ -91,9 +106,7 @@ function ListingEditScreen(props) {
           category: null,
           images: [],
         }}
-        onSubmit={(values) => {
-          console.log(location);
-        }}
+        onSubmit={handleSubmit}
         validationSchema={validationSchema}
       >
         <FormImagePicker name="images" />

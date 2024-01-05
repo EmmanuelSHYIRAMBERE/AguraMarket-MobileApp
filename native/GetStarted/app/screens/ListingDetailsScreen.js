@@ -9,7 +9,11 @@ function ListingDetailsScreen({ route }) {
 
   return (
     <View>
-      <Image style={styles.image} source={listing.images[0].url} />
+      <Image
+        style={styles.image}
+        source={{ uri: listing.images[0].url }}
+        resizeMode="stretch"
+      />
       <View style={styles.detailsContainer}>
         <AppText style={styles.title}>{listing.title}</AppText>
         <AppText style={styles.price}>Rwf{listing.price}</AppText>

@@ -1,33 +1,44 @@
-import React, { useEffect, useState } from "react";
+import axios from "axios";
+import React, { useEffect } from "react";
 import { FlatList, StyleSheet } from "react-native";
 
+import ActivityIndicator from "../assets/components/ActivityIndicator";
+import AppButton from "../assets/components/AppButton";
+import AppText from "../assets/components/AppText";
 import Card from "../assets/components/Card";
 import colors from "../config/colors";
-import listingsApi from "../api/listings";
 import routes from "../navigation/routes";
 import Screen from "../assets/components/Screen";
-import axios from "axios";
+import useApi from "../hooks/useApi";
 
 function ListingsScreen({ navigation }) {
-  const [listings, setListings] = useState([]);
+  const fetchData = () =>
+    axios.get(
+      `https://aguramarketapi.onrender.com/AguraMarket/products/getAllProducts`
+    );
+
+  const {
+    data: listings,
+    error,
+    loading,
+    request: loadListings,
+  } = useApi({
+    apiFunc: fetchData,
+  });
 
   useEffect(() => {
-    loadListings();
+    loadListings(1, 2, 3);
   }, []);
-
-  const loadListings = async () => {
-    try {
-      const response = await axios.get(
-        `https://aguramarketapi.onrender.com/AguraMarket/products/getAllProducts`
-      );
-      setListings(response.data);
-    } catch (error) {
-      console.log(error);
-    }
-  };
 
   return (
     <Screen style={styles.screen}>
+      {error && (
+        <>
+          <AppText>Couldn't retrieve the products.</AppText>
+          <AppButton title="Retry" onPress={loadListings} />
+        </>
+      )}
+      <ActivityIndicator visible={loading} />
       <FlatList
         data={listings}
         keyExtractor={(listing) => listing.id.toString()}
