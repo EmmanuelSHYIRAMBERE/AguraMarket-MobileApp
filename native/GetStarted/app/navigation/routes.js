@@ -1,4 +1,4 @@
 export default Object.freeze({
-  LISTING_DETAILS: "ListingDetails",
+  LISTING_DETAILS: "ProductDetails",
   LISTING_EDIT: "ListingEdit",
 });

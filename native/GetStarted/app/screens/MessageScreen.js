@@ -9,15 +9,16 @@ import ListItemDeleteIcon from "../assets/components/ListItemDeleteIcon";
 const initialMessages = [
   {
     id: 1,
-    title: "T1",
-    description: "D1",
+    title: "Emmanuel",
+    description: "Hey! Is this item still available?",
     image: require("../assets/images/123.jpg"),
   },
   {
     id: 2,
-    title: "T2",
-    description: "D2",
-    image: require("../assets/images/123.jpg"),
+    title: "Florien",
+    description:
+      "I'm interested in this item. When will you be able to post it?",
+    image: require("../assets/images/image/project-4.jpg"),
   },
 ];
 
@@ -27,7 +28,6 @@ function MessageScreen(props) {
   const [refreshing, setRefreshing] = useState(false);
 
   const handleDelete = (message) => {
-    //Delete the message from messages
     setMessages(messages.filter((m) => m.id !== message.id));
   };
 

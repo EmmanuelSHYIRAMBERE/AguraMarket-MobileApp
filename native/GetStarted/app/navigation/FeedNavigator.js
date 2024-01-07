@@ -15,7 +15,7 @@ const FeedNavigator = () => (
         headerShown: false,
       }}
     />
-    <Stack.Screen name="ListingDetails" component={ListingDetailsScreen} />
+    <Stack.Screen name="ProductDetails" component={ListingDetailsScreen} />
   </Stack.Navigator>
 );
 

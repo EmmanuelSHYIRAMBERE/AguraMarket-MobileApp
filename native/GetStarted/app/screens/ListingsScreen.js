@@ -22,12 +22,10 @@ function ListingsScreen({ navigation }) {
     error,
     loading,
     request: loadListings,
-  } = useApi({
-    apiFunc: fetchData,
-  });
+  } = useApi(fetchData);
 
   useEffect(() => {
-    loadListings(1, 2, 3);
+    loadListings();
   }, []);
 
   return (

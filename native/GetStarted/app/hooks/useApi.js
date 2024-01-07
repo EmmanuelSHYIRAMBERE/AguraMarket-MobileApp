@@ -1,30 +1,21 @@
-import axios from "axios";
 import { useState } from "react";
 
-export default useApi = ({ apiFunc }) => {
+export default useApi = (apiFunc) => {
   const [data, setData] = useState([]);
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(false);
 
   const request = async (...args) => {
-    try {
-      setLoading(true);
+    setLoading(true);
+    const response = await apiFunc(...args);
+    setLoading(false);
 
-      const response = await apiFunc(...args);
+    if (!(response.status >= 200 && response.status < 300))
+      return setError(true);
 
-      setLoading(false);
-      setError(false);
-      setData(response.data);
-    } catch (error) {
-      console.log(error);
-      setError(true);
-    }
+    setError(false);
+    setData(response.data);
   };
 
-  return {
-    data,
-    error,
-    loading,
-    request,
-  };
+  return { data, error, loading, request };
 };

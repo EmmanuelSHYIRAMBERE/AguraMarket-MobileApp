@@ -1,23 +1,24 @@
 import React, { useState } from "react";
 import {
-  Button,
-  FlatList,
-  Modal,
+  View,
   StyleSheet,
   TouchableWithoutFeedback,
-  View,
+  Modal,
+  Button,
+  FlatList,
 } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
-import colors from "../../config/colors";
 import AppText from "./AppText";
-import Screen from "./Screen";
+import colors from "../../config/colors";
 import PickerItem from "./PickerItem";
+import Screen from "./Screen";
 
 function AppPicker({
   icon,
   items,
-  onSelectedItem,
+  numberOfColumns = 1,
+  onSelectItem,
   PickerItemComponent = PickerItem,
   placeholder,
   selectedItem,
@@ -37,12 +38,9 @@ function AppPicker({
               style={styles.icon}
             />
           )}
-          {selectedItem ? (
-            <AppText style={styles.text}>{selectedItem.label}</AppText>
-          ) : (
-            <AppText style={styles.placeholder}>{placeholder}</AppText>
-          )}
-
+          <AppText style={styles.text}>
+            {selectedItem ? selectedItem.label : placeholder}
+          </AppText>
           <MaterialCommunityIcons
             name="chevron-down"
             size={20}
@@ -56,12 +54,14 @@ function AppPicker({
           <FlatList
             data={items}
             keyExtractor={(item) => item.value.toString()}
+            numColumns={numberOfColumns}
             renderItem={({ item }) => (
               <PickerItemComponent
+                item={item}
                 label={item.label}
                 onPress={() => {
                   setModalVisible(false);
-                  onSelectedItem(item);
+                  onSelectItem(item);
                 }}
               />
             )}
@@ -71,6 +71,7 @@ function AppPicker({
     </>
   );
 }
+
 const styles = StyleSheet.create({
   container: {
     backgroundColor: colors.light,

@@ -4,10 +4,10 @@
     "slug": "DoneWithIt",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./app/assets/images/icon.png",
+    "icon": "./app/assets/images/image/hero-banner.png",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./app/assets/images/splash.png",
+      "image": "./app/assets/images/image/hero-banner.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
