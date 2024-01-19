@@ -20,7 +20,7 @@ const menuItems = [
   },
   {
     title: "My tasks",
-    icon: { name: "assignment", backgroundColor: colors.medium },
+    icon: { name: "note-text-outline", backgroundColor: colors.medium },
     targetScreen: "Tasks",
   },
 ];

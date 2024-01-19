@@ -7,6 +7,7 @@
     "orientation": "portrait",
     "icon": "./app/assets/images/icon.png",
     "userInterfaceStyle": "light",
+    "notification": { "iosDisplayInForeground": true },
     "splash": {
       "image": "./app/assets/images/image/hero-banner.png",
       "resizeMode": "contain",
@@ -20,7 +21,9 @@
       "adaptiveIcon": {
         "foregroundImage": "./app/assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.emmanuelshyirambere.aguramarketapp",
+      "googleServicesFile": "./google-services.json"
     },
     "web": {
       "favicon": "./app/assets/images/favicon.png",

@@ -18,7 +18,7 @@ const initialMessages = [
     title: "Florien",
     description:
       "I'm interested in this item. When will you be able to post it?",
-    image: require("../assets/images/image/project-4.jpg"),
+    image: require("../assets/images/123.jpg"),
   },
 ];
 

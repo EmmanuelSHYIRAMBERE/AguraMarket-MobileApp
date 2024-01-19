@@ -1,34 +1,55 @@
 import React from "react";
-import { StyleSheet, View } from "react-native";
+import { Image } from "react-native-expo-image-cache";
+import {
+  KeyboardAvoidingView,
+  ScrollView,
+  StyleSheet,
+  View,
+  Platform,
+  SafeAreaView,
+} from "react-native";
+
 import AppText from "../assets/components/AppText";
 import colors from "../config/colors";
+import ContactSellerForm from "../assets/components/ContactSellerForm";
 import ListItem from "../assets/components/ListItem";
-import { Image } from "react-native-expo-image-cache";
+import Screen from "../assets/components/Screen";
 
 function ListingDetailsScreen({ route }) {
   const listing = route.params;
 
   return (
-    <View>
-      <Image
-        style={styles.image}
-        preview={{ uri: listing.images[0].thumbnailUrl }}
-        tint="light"
-        uri={listing.images[0].url}
-        resizeMode="stretch"
-      />
-      <View style={styles.detailsContainer}>
-        <AppText style={styles.title}>{listing.title}</AppText>
-        <AppText style={styles.price}>Rwf{listing.price}</AppText>
-        <View style={styles.userContainer}>
-          <ListItem
-            image={require("../assets/images/123.jpg")}
-            title="Emmanuel"
-            subTitle="10 Listings"
-          />
-        </View>
-      </View>
-    </View>
+    <SafeAreaView style={{ flex: 1 }}>
+      <KeyboardAvoidingView
+        behavior="padding" // Adjust behavior as needed
+        keyboardVerticalOffset={Platform.OS === "ios" ? 0 : 100}
+        style={{ flex: 1 }} // Ensure KeyboardAvoidingView takes up the entire screen
+      >
+        <Screen style={styles.screen}>
+          <ScrollView>
+            <Image
+              style={styles.image}
+              preview={{ uri: listing.images[0].thumbnailUrl }}
+              tint="light"
+              uri={listing.images[0].url}
+              resizeMode="stretch"
+            />
+            <View style={styles.detailsContainer}>
+              <AppText style={styles.title}>{listing.title}</AppText>
+              <AppText style={styles.price}>Rwf{listing.price}</AppText>
+              <View style={styles.userContainer}>
+                <ListItem
+                  image={require("../assets/images/123.jpg")}
+                  title="Emmanuel"
+                  subTitle="10 products"
+                />
+              </View>
+              <ContactSellerForm listing={listing} />
+            </View>
+          </ScrollView>
+        </Screen>
+      </KeyboardAvoidingView>
+    </SafeAreaView>
   );
 }
 
@@ -36,9 +57,13 @@ const styles = StyleSheet.create({
   detailsContainer: {
     padding: 20,
   },
+  screen: {
+    padding: 2,
+  },
   image: {
     width: "100%",
     height: 300,
+    borderRadius: 10,
   },
   price: {
     color: colors.secondary,

@@ -1,9 +1,12 @@
 import { create } from "apisauce";
-import cache from "../utility/cache";
+
 import authStorage from "../auth/storage";
+import cache from "../utility/cache";
+import settings from "../config/settings";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const apiClient = create({
-  baseURL: "https://aguramarketapi.onrender.com/AguraMarket",
+  baseURL: settings.apiUrl,
 });
 
 apiClient.addAsyncRequestTransform(async (request) => {
@@ -18,12 +21,21 @@ apiClient.get = async (url, params, axiosConfig) => {
   const response = await get(url, params, axiosConfig);
 
   if (response.ok) {
+    await AsyncStorage.setItem("products", JSON.stringify(response.data));
+
     cache.store(url, response.data);
     return response;
   }
 
+  const storedProducts = await AsyncStorage.getItem("products");
   const data = await cache.get(url);
-  return data ? { ok: true, data } : response;
+
+  console.log("storedProducts", storedProducts);
+  return data
+    ? { ok: true, data }
+    : storedProducts
+    ? { ok: true, data: storedProducts }
+    : response;
 };
 
 export default apiClient;

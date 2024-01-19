@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { StyleSheet } from "react-native";
+import { Alert, StyleSheet } from "react-native";
 import * as Yup from "yup";
 
 import {
@@ -14,11 +14,10 @@ import listingsApi from "../api/listings";
 import Screen from "../assets/components/Screen";
 import useLocation from "../hooks/useLocation";
 import UploadScreen from "./UploadScreen";
-import axios from "axios";
 
 const validationSchema = Yup.object().shape({
   title: Yup.string().required().min(1).label("Title"),
-  price: Yup.number().required().min(1).max(10000).label("Price"),
+  price: Yup.number().required().min(1).max(1000000000000000).label("Price"),
   description: Yup.string().label("Description"),
   category: Yup.object().required().nullable().label("Category"),
   images: Yup.array().min(1, "Please select at least one image."),
@@ -81,91 +80,24 @@ const categories = [
   },
 ];
 
-function ListingEditScreen(props) {
+function ListingEditScreen() {
   const location = useLocation();
   const [uploadVisible, setUploadVisible] = useState(false);
   const [progress, setProgress] = useState(0);
 
-  // const handleSubmit = async () => {
-  //   const form = new FormData();
-  //   form.append("title", "test2");
-  //   form.append(
-  //     "url",
-  //     "https://tse2.mm.bing.net/th?id=OIP.H2-GvYPICUONmDK834krdwHaEK&pid=Api&P=0&h=220"
-  //   );
-  //   form.append(
-  //     "thumbnailUrl",
-  //     "https://tse2.mm.bing.net/th?id=OIP.H2-GvYPICUONmDK834krdwHaEK&pid=Api&P=0&h=220"
-  //   );
-  //   form.append("price", "200");
-  //   form.append("categoryId", "8345083");
-  //   form.append("userId", "97234");
-  //   form.append("Longitude", "location.longitude");
-  //   form.append("Latitude", "location.latitude");
-  //   const options = {
-  //     method: "POST",
-  //     url: "https://aguramarketapi.onrender.com/AguraMarket/products/addNewProduct",
-  //     headers: {
-  //       "Content-Type":
-  //         "multipart/form-data; boundary=---011000010111000001101001",
-  //     },
-  //     data: form,
-  //   };
-  //   console.log(form);
-  //   axios
-  //     .request(options)
-  //     .then(function (response) {
-  //       console.log(response.data);
-  //     })
-  //     .catch(function (error) {
-  //       console.error(error);
-  //     });
-  // };
-
-  // const handleUpdate = async () => {
-  //   // setIsLoading(false)
-  //   formData.append("orderId", Order._id);
-  //   formData.append("Image", {
-  //     name: new Date() + "_picture",
-  //     uri: Imager,
-  //     type: "image/jpeg",
-  //   });
-
-  //   try {
-
-  //     const response = await axios.put(
-  //       "https://aguramarketapi.onrender.com/AguraMarket/products/addNewProduct",
-  //       formData,
-  //       {
-  //         headers: {
-
-  //           "Content-Type": "multipart/form-data",
-  //         },
-  //       }
-  //     );
-
-  //     console.log( "Order complete response",response.data);
-  //     alert("order completed successfully");
-  //     navigation.navigate("DeliverHome")
-  //     setIsLoading(true)
-  //     // navigation.navigate("TopTabDelivery", screen("TotalAmount"))
-  //     navigation.navigate("TopTabDelivery")
-  //   } catch (error) {
-  //     console.log(error, "error to update");
-  //   }
-  // };
-
   const handleSubmit = async (listing, { resetForm }) => {
     setProgress(0);
     setUploadVisible(true);
+    const listingData = {
+      ...listing,
+      location: JSON.parse(location),
+    };
 
-    const result = await listingsApi.addListing(
-      { ...listing, location },
-      (progress) => setProgress(progress)
+    const result = await listingsApi.addListing(listingData, (progress) =>
+      setProgress(progress)
     );
 
-    console.log(result);
-
+    Alert.alert("Product added successfully");
     if (!result.ok) {
       setUploadVisible(false);
       return alert("Could not save the product");
@@ -224,7 +156,7 @@ function ListingEditScreen(props) {
 
 const styles = StyleSheet.create({
   container: {
-    padding: 20,
+    padding: 10,
   },
 });
 export default ListingEditScreen;

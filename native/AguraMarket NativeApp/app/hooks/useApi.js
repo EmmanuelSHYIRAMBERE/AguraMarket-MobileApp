@@ -10,7 +10,7 @@ export default useApi = (apiFunc) => {
     const response = await apiFunc(...args);
     setLoading(false);
 
-    setError(!response.data);
+    setError(!response.ok);
     setData(response.data);
     return response;
   };

@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { FlatList, StyleSheet } from "react-native";
 
 import ActivityIndicator from "../assets/components/ActivityIndicator";
@@ -13,50 +13,42 @@ import Screen from "../assets/components/Screen";
 import useApi from "../hooks/useApi";
 
 function ListingsScreen({ navigation }) {
+  const [refreshing, setRefreshing] = useState(false);
   const getListingsApi = useApi(listingsApi.getListings);
-
-  useEffect(() => {
-    getListingsApi.request();
-  }, []);
-  const fetchData = () =>
-    axios.get(
-      `https://aguramarketapi.onrender.com/AguraMarket/products/getAllProducts`
-    );
-
-  const {
-    data: listings,
-    error,
-    loading,
-    request: loadListings,
-  } = useApi(fetchData);
 
   useEffect(() => {
     getListingsApi.request();
   }, []);
 
   return (
-    <Screen style={styles.screen}>
-      {getListingsApi.error && (
-        <>
-          <AppText>Couldn't retrieve the listings.</AppText>
-          <AppButton title="Retry" onPress={getListingsApi.request} />
-        </>
-      )}
+    <>
       <ActivityIndicator visible={getListingsApi.loading} />
-      <FlatList
-        data={getListingsApi.data}
-        keyExtractor={(listing) => listing.id.toString()}
-        renderItem={({ item }) => (
-          <Card
-            title={item.title}
-            subTitle={"$" + item.price}
-            imageUrl={item.images[0].url}
-            onPress={() => navigation.navigate(routes.LISTING_DETAILS, item)}
-            thumbnailUrl={item.images[0].thumbnailUrl}
-          />
+      <Screen style={styles.screen}>
+        {getListingsApi.error && (
+          <>
+            <AppText>Couldn't retrieve the listings.</AppText>
+            <AppButton title="Retry" onPress={getListingsApi.request} />
+          </>
         )}
-      />
-    </Screen>
+        <FlatList
+          data={getListingsApi.data}
+          keyExtractor={(listing) => listing.id.toString()}
+          renderItem={({ item }) => (
+            <Card
+              title={item.title}
+              subTitle={"Rwf" + item.price}
+              imageUrl={item.images && item.images[0] ? item.images[0].url : ""}
+              onPress={() => navigation.navigate(routes.LISTING_DETAILS, item)}
+              thumbnailUrl={
+                item.images && item.images[0] ? item.images[0].thumbnailUrl : ""
+              }
+            />
+          )}
+          refreshing={refreshing}
+          onRefresh={() => getListingsApi.request()}
+        />
+      </Screen>
+    </>
   );
 }
 

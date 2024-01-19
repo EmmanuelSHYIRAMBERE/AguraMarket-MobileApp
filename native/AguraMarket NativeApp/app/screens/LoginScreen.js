@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Image, StyleSheet } from "react-native";
+import React, { useContext, useState } from "react";
+import { Alert, Image, StyleSheet } from "react-native";
 import * as Yup from "yup";
 
 import {
@@ -9,8 +9,9 @@ import {
   SubmitButton,
 } from "../assets/components/forms";
 import authApi from "../api/auth";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import credentialsContext from "./../auth/context";
 import Screen from "../assets/components/Screen";
-import useAuth from "../auth/useAuth";
 
 const validationSchema = Yup.object().shape({
   email: Yup.string().required().email().label("Email"),
@@ -18,20 +19,38 @@ const validationSchema = Yup.object().shape({
 });
 
 function LoginScreen(props) {
-  const { logIn } = useAuth();
+  const { user, setUser } = useContext(credentialsContext);
   const [loginFailed, setLoginFailed] = useState(false);
 
   const handleSubmit = async ({ email, password }) => {
     const result = await authApi.login(email, password);
 
-
-    if (!result.ok) return setLoginFailed(true);
+    if (!result.ok) {
+      if (result.data.message) {
+        Alert.alert(result.data?.message);
+      }
+      return setLoginFailed(true);
+    }
 
     setLoginFailed(false);
 
-    const user = result.data;
+    const loggedUser = result.data;
 
-    logIn(user);
+    persistLoggedInUser(loggedUser);
+    if (loggedUser.message) {
+      Alert.alert(loggedUser?.message);
+    }
+  };
+
+  const persistLoggedInUser = (loggedUser) => {
+    AsyncStorage.setItem("user", JSON.stringify(loggedUser))
+      .then(() => {
+        console.log("loggedUser", loggedUser);
+        setUser(loggedUser);
+      })
+      .catch((error) => {
+        console.log("Error storing the logged user", error);
+      });
   };
   return (
     <Screen style={styles.container}>

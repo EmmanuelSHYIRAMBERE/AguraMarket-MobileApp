@@ -1,3 +1,4 @@
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import client from "./client";
 
 const endpoint = "/products/getAllProducts";
@@ -5,7 +6,7 @@ const addEndpoint = "/products/addNewProduct";
 
 const getListings = () => client.get(endpoint);
 
-export const addListing = (listing, onUploadProgress) => {
+export const addListing = async (listing, onUploadProgress) => {
   const data = new FormData();
   data.append("title", listing.title);
   data.append("price", listing.price);
@@ -13,12 +14,7 @@ export const addListing = (listing, onUploadProgress) => {
   data.append("description", listing.description);
 
   listing.images.forEach((image, index) =>
-    data.append("url", {
-      name: "image" + index,
-      type: "image/jpeg",
-      uri: image,
-    }),
-    data.append("thumbnailUrl", {
+    data.append("images", {
       name: "image" + index,
       type: "image/jpeg",
       uri: image,
@@ -28,10 +24,20 @@ export const addListing = (listing, onUploadProgress) => {
   if (listing.location)
     data.append("location", JSON.stringify(listing.location));
 
-  return client.post(addEndpoint, data, {
-    onUploadProgress: (progress) =>
-      onUploadProgress(progress.loaded / progress.total),
-  });
+  const result = await AsyncStorage.getItem("user");
+
+  if (result !== null) {
+    const user = JSON.parse(result);
+    const { access_token } = user;
+    return client.post(addEndpoint, data, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+        Authorization: `Bearer ${access_token}`,
+      },
+      onUploadProgress: (progress) =>
+        onUploadProgress(progress.loaded / progress.total),
+    });
+  }
 };
 
 export default {
