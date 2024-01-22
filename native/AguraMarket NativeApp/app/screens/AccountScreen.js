@@ -12,6 +12,7 @@ const menuItems = [
   {
     title: "My Products",
     icon: { name: "format-list-bulleted", backgroundColor: colors.primary },
+    targetScreen: "Products",
   },
   {
     title: "My messages",
@@ -31,11 +32,15 @@ function AccountScreen({ navigation }) {
   return (
     <Screen style={styles.screen}>
       <View style={styles.container}>
-        <ListItem
-          title={user.user.fullNames}
-          subTitle={user.user.email}
-          image={require("../assets/images/123.jpg")}
-        />
+        {user ? (
+          <ListItem
+            title={user.user.fullNames}
+            subTitle={user.user.email}
+            image={require("../assets/images/123.jpg")}
+          />
+        ) : (
+          navigation.navigate("Login")
+        )}
       </View>
       <View style={styles.container}>
         <FlatList

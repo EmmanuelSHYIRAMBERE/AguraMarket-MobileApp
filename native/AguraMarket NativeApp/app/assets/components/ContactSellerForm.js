@@ -1,6 +1,6 @@
 import React from "react";
 import { Alert, Keyboard } from "react-native";
-import { Notifications } from "expo";
+import * as Notifications from "expo-notifications";
 import * as Yup from "yup";
 
 import messagesApi from "../../api/messages";
@@ -13,16 +13,14 @@ function ContactSellerForm({ product }) {
     const result = await messagesApi.send(message, product.id);
 
     if (!result.ok) {
-      console.log("Error contacting seller", result);
       return Alert.alert("Error", "Could not send the message to the seller.");
     }
 
-    console.log("result contacting seller ---", result);
     resetForm();
 
-    Notifications.presentLocalNotificationAsync({
+    Notifications.presentNotificationAsync({
       title: "Awesome!",
-      body: "Your message was sent to the seller.",
+      body: "Your message was sent successfully.",
     });
   };
 

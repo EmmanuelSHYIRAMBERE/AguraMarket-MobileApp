@@ -28,8 +28,11 @@ export default function App() {
   }, []);
 
   return (
-    <NavigationContainer ref={navigationRef} theme={navigationTheme}>
-      <AppNavigator />
-    </NavigationContainer>
+    <credentialsContext.Provider value={{ user, setUser }}>
+      <OfflineNotice />
+      <NavigationContainer ref={navigationRef} theme={navigationTheme}>
+        {user ? <AppNavigator /> : <AuthNavigator />}
+      </NavigationContainer>
+    </credentialsContext.Provider>
   );
 }

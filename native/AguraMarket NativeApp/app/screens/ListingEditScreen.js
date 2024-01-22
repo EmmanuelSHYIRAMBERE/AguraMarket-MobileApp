@@ -90,7 +90,7 @@ function ListingEditScreen() {
     setUploadVisible(true);
     const listingData = {
       ...listing,
-      location: JSON.parse(location),
+      location: location,
     };
 
     const result = await listingsApi.addListing(listingData, (progress) =>
@@ -100,6 +100,7 @@ function ListingEditScreen() {
     Alert.alert("Product added successfully");
     if (!result.ok) {
       setUploadVisible(false);
+      console.log(result);
       return alert("Could not save the product");
     }
 

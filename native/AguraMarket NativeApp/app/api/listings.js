@@ -3,6 +3,7 @@ import client from "./client";
 
 const endpoint = "/products/getAllProducts";
 const addEndpoint = "/products/addNewProduct";
+const deleteEndpoint = "/products/addNewProduct";
 
 const getListings = () => client.get(endpoint);
 

@@ -45,7 +45,6 @@ function LoginScreen(props) {
   const persistLoggedInUser = (loggedUser) => {
     AsyncStorage.setItem("user", JSON.stringify(loggedUser))
       .then(() => {
-        console.log("loggedUser", loggedUser);
         setUser(loggedUser);
       })
       .catch((error) => {

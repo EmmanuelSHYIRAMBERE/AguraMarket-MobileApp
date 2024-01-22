@@ -21,9 +21,9 @@ function ListingDetailsScreen({ route }) {
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <KeyboardAvoidingView
-        behavior="padding" // Adjust behavior as needed
+        behavior="padding"
         keyboardVerticalOffset={Platform.OS === "ios" ? 0 : 100}
-        style={{ flex: 1 }} // Ensure KeyboardAvoidingView takes up the entire screen
+        style={{ flex: 1 }}
       >
         <Screen style={styles.screen}>
           <ScrollView>
@@ -44,7 +44,7 @@ function ListingDetailsScreen({ route }) {
                   subTitle="10 products"
                 />
               </View>
-              <ContactSellerForm listing={listing} />
+              <ContactSellerForm product={listing} />
             </View>
           </ScrollView>
         </Screen>
